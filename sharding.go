@@ -33,6 +33,8 @@ type Sharding struct {
 
 	_config Config
 	_tables []any
+
+	mutex sync.RWMutex
 }
 
 // Config specifies the configuration for sharding.
@@ -266,8 +268,12 @@ func (s *Sharding) switchConn(db *gorm.DB) {
 	// When DoubleWrite is enabled, we need to query database schema
 	// information by table name during the migration.
 	if _, ok := db.Get(ShardingIgnoreStoreKey); !ok {
-		s.ConnPool = &ConnPool{ConnPool: db.Statement.ConnPool, sharding: s}
-		db.Statement.ConnPool = s.ConnPool
+		s.mutex.Lock()
+		if db.Statement.ConnPool != nil {
+			s.ConnPool = &ConnPool{ConnPool: db.Statement.ConnPool, sharding: s}
+			db.Statement.ConnPool = s.ConnPool
+		}
+		s.mutex.Unlock()
 	}
 }
 
