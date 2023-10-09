@@ -18,7 +18,7 @@ Gorm Sharding 是一个高性能的数据库分表中间件。
 ## Install
 
 ```bash
-go get -u gorm.io/sharding
+go get -u github.com/zishiguo/sharding
 ```
 
 ## Usage
@@ -31,7 +31,7 @@ import (
 
   "gorm.io/driver/postgres"
   "gorm.io/gorm"
-  "gorm.io/sharding"
+  "github.com/zishiguo/sharding"
 )
 
 db, err := gorm.Open(postgres.New(postgres.Config{DSN: "postgres://localhost:5432/sharding-db?sslmode=disable"))
