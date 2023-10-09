@@ -417,17 +417,20 @@ func (s *Sharding) resolve(query string, args ...any) (ftQuery, stQuery, tableNa
 		switch stmt := expr.(type) {
 		case *sqlparser.SelectStatement:
 			ftQuery = stmt.String()
-			stmt.FromItems = newTable
-			stmt.OrderBy = replaceOrderByTableName(stmt.OrderBy, tableName, newTable.Name.Name)
-			stQuery = stmt.String()
+			//stmt.FromItems = newTable
+			//stmt.OrderBy = replaceOrderByTableName(stmt.OrderBy, tableName, newTable.Name.Name)
+			//stQuery = stmt.String()
+			stQuery = strings.ReplaceAll(stmt.String(), tableName, newTable.Name.Name)
 		case *sqlparser.UpdateStatement:
 			ftQuery = stmt.String()
-			stmt.TableName = newTable
-			stQuery = stmt.String()
+			//stmt.TableName = newTable
+			//stQuery = stmt.String()
+			stQuery = strings.ReplaceAll(stmt.String(), tableName, newTable.Name.Name)
 		case *sqlparser.DeleteStatement:
 			ftQuery = stmt.String()
-			stmt.TableName = newTable
-			stQuery = stmt.String()
+			//stmt.TableName = newTable
+			//stQuery = stmt.String()
+			stQuery = strings.ReplaceAll(stmt.String(), tableName, newTable.Name.Name)
 		}
 	}
 
